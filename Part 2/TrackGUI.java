@@ -14,21 +14,30 @@ public class TrackGUI implements ActionListener {
     private JLabel TrackLabel;
     private ImageIcon straightTrackIcon;
     private ImageIcon ovalTrackIcon;
+    private JComboBox lanesComboBox;
 
     public void backButtonActionPerformed() {
         System.out.println("backButtonActionPerformed");
+        MainMenuGUI mainMenuGUI = new MainMenuGUI();
+        frame.setVisible(false);
+        mainMenuGUI.setUpGUI();
     }
 
     public void straightTrackButtonActionPerformed() {
         System.out.println("straightTrackButtonActionPerformed");
         TrackLabel.setVisible(!TrackLabel.isVisible());
         TrackLabel.setIcon(straightTrackIcon);
+        lanesComboBox.setVisible(TrackLabel.isVisible());
+        mainPanel.add(lanesComboBox, BorderLayout.WEST);
+
     }
 
     public void ovalTrackButtonActionPerformed() {
         System.out.println("ovalTrackButtonActionPerformed");
         TrackLabel.setVisible(!TrackLabel.isVisible());
         TrackLabel.setIcon(ovalTrackIcon);
+        lanesComboBox.setVisible(TrackLabel.isVisible());
+        mainPanel.add(lanesComboBox, BorderLayout.WEST);
     }
 
     public void setUpGUI() {
@@ -36,12 +45,14 @@ public class TrackGUI implements ActionListener {
         ovalTrackIcon = new ImageIcon("Part 2/ovalTrack.png");
         setUpLabel();
         setUpButtons();
+        setUpComboBox();
         setUpPanel();
         setUpFrame();
 
     }
 
     public void setUpFrame() {
+        frame.setVisible(true);
         frame.setSize(1080, 1080);
         frame.setTitle("Customise your track!");
         frame.getContentPane().setBackground(Color.WHITE);
@@ -65,9 +76,6 @@ public class TrackGUI implements ActionListener {
         TrackLabel.setPreferredSize(new Dimension(800, 800));
         TrackLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-
-
     }
 
     public void setUpPanel() {
@@ -86,8 +94,6 @@ public class TrackGUI implements ActionListener {
         mainPanel.setBackground(Color.WHITE);
         mainPanel.add(TrackLabel);
         mainPanel.setPreferredSize(new Dimension(800, 800));
-
-
 
     }
 
@@ -112,6 +118,11 @@ public class TrackGUI implements ActionListener {
 
     }
 
+    public void setUpComboBox() {
+        Integer[] lanes = {1, 2, 3, 4, 5};
+        lanesComboBox = new JComboBox(lanes);
+        lanesComboBox.addActionListener(this);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -124,6 +135,9 @@ public class TrackGUI implements ActionListener {
         }
         else if (e.getSource() == ovalTrackButton) {
             ovalTrackButtonActionPerformed();
+        }
+        else if (e.getSource() == lanesComboBox) {
+            System.out.println(lanesComboBox.getSelectedItem());
         }
 
     }
