@@ -18,8 +18,7 @@ public class MainMenuGUI implements ActionListener {
     private JButton startButton;
     private JPanel mainMenuPanel;
     public JFrame frame = new JFrame();
-    private JLabel trackLabel;
-    private JComboBox trackDropdown;
+
 
     public void styleButton(JButton button, String text) {
         button.setText(text);
@@ -34,6 +33,8 @@ public class MainMenuGUI implements ActionListener {
 
     public void goToTrackGUI() {
         System.out.print("Going to Track GUI");
+        TrackGUI trackGUI = new TrackGUI();
+        trackGUI.setUpGUI();
     }
 
     public void goToStatsGUI() {
@@ -50,8 +51,8 @@ public class MainMenuGUI implements ActionListener {
 
     public void setUpGUI () {
         //Images
-        gameIcon = new ImageIcon("Part 1/horse.png");
-        horseIcon = new ImageIcon("Part 1/horseimage.png");
+        gameIcon = new ImageIcon("Part 2/horse.png");
+        horseIcon = new ImageIcon("Part 2/horseimage.png");
         homeIcon = new ImageIcon("home.png");
 
         horseTitleborder = BorderFactory.createLineBorder(Color.cyan, 3);
@@ -66,7 +67,7 @@ public class MainMenuGUI implements ActionListener {
         frame.setSize(1080, 1080);
         frame.setTitle("Horse Race Simulator");
         frame.setIconImage(gameIcon.getImage());
-        frame.getContentPane().setBackground(Color.WHITE);
+        frame.setBackground(Color.WHITE);
         frame.setLayout(new BorderLayout());
 
         frame.add(optionsPanel, BorderLayout.WEST);
@@ -89,9 +90,6 @@ public class MainMenuGUI implements ActionListener {
         title.setOpaque(true);
         title.setBorder(horseTitleborder);
 
-        trackLabel = new JLabel();
-        trackLabel.setText("Customise the track!");
-        trackLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     }
 
@@ -137,6 +135,7 @@ public class MainMenuGUI implements ActionListener {
         //Start Button
         startButton = new JButton();
         styleButton(startButton, "Start");
+        startButton.setBackground(Color.green);
     }
 
 
@@ -157,7 +156,8 @@ public class MainMenuGUI implements ActionListener {
 
            optionsPanel.setVisible(false);
            mainMenuPanel.setVisible(false);
-           title.setVisible(false);
+           frame.setVisible(false);
+
         }
     }
 
