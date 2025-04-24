@@ -34,9 +34,7 @@ public class MainMenuGUI implements ActionListener {
     public void goToTrackGUI() {
         RaceGUI raceGUI = new RaceGUI(4);
         raceGUI.setUpGUI();
-//        System.out.println("Going to Horse Customisation GUI");
-//        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
-//        horseCustomiseGUI.setUpGUI();
+
     }
 
     public void goToStatsGUI() {
@@ -48,7 +46,9 @@ public class MainMenuGUI implements ActionListener {
     }
 
     public void goToHorsesGUI() {
-        System.out.print("Going to Horses GUI");
+        System.out.println("Going to Horse Customisation GUI");
+        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
+        horseCustomiseGUI.setUpGUI();
     }
 
     public void setUpGUI () {

@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class HorseCustomiseGUI implements ActionListener {
+    private int horseNum = 0;
     //frames
     private JFrame frame = new JFrame();
 
@@ -20,17 +22,68 @@ public class HorseCustomiseGUI implements ActionListener {
     //buttons
     private JButton nextButton = new JButton("Next");
     private JButton backButton = new JButton("Back");
-    private JButton breedButton = new JButton("Breed");
-    private JButton nameButton = new JButton("Name");
-    private JButton thoroughBredButton = new JButton("ThoroughBred");
-    private JButton ArabianButton = new JButton("Arabian");
-    private JButton QuarterHorse = new JButton("Quarter Horse");
+
+    //combo boxes
+    private JComboBox breedsComboBox;
+    private JComboBox horseSymbolsComboBox;
+
+
 
     public void setUpGUI() {
+        while (horseNum < 2 || horseNum > 5) {
+            horseNum = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many horses would you like in your race? (2-5)", "Horse Num",
+                    JOptionPane.QUESTION_MESSAGE));
+        }
+        createHorseOptions();
+
         setUpButton();
         setUpPanel();
         setUpFrame();
     }
+
+    public double confidenceDecider(String breed) {
+        double confidence = 0.0;
+        if (breed.equals("Arabian")) {
+            confidence = 0.5;
+        }
+        else if (breed.equals("Quarter")) {
+            confidence = 0.4;
+        }
+        else if (breed.equals("Thorough Bred")) {
+            confidence = 0.7;
+        }
+        return confidence;
+    }
+
+    public void createHorseOptions() {
+        ArrayList<Horse> horses = new ArrayList<>();
+        String[] breedOptions = {"Arabian", "Quarter", "Thorough Bred"};
+        Character[] breedChar = {'A', 'Q', 'T'};
+
+        for (int i = 1; i <= horseNum; i++) {
+            String name = JOptionPane.showInputDialog(frame, "Name of horse " + i + ":", "Name your horse", JOptionPane.QUESTION_MESSAGE);
+            if (name == null || name.trim().isEmpty()) continue;
+
+            JComboBox<Character> horseSymbolsComboBox = new JComboBox<>(breedChar);
+            JComboBox<String> breedsComboBox = new JComboBox<>(breedOptions);
+
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(new JLabel("Select a horse symbol:"));
+            panel.add(horseSymbolsComboBox);
+            panel.add(new JLabel("Select a breed:"));
+            panel.add(breedsComboBox);
+
+            int result = JOptionPane.showConfirmDialog(frame, panel, "Choose Horse Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result != JOptionPane.OK_OPTION) continue;
+
+            char selectedHorseSymbol = (char) horseSymbolsComboBox.getSelectedItem();
+            String selectedBreed = breedsComboBox.getSelectedItem().toString();
+            double confidence = confidenceDecider(selectedBreed);
+
+            horses.add(new Horse(selectedHorseSymbol, name, confidence));
+        }
+    }
+
 
     public void setUpFrame() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,14 +106,12 @@ public class HorseCustomiseGUI implements ActionListener {
         mainPanel.setBackground(Color.WHITE);
         mainPanel.add(nextButton);
 
+
         optionsPanel.setBackground(Color.WHITE);
         optionsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
         optionsPanel.add(backButton);
         optionsPanel.add(Box.createVerticalStrut(50));
-        optionsPanel.add(breedButton);
-        optionsPanel.add(Box.createVerticalStrut(50));
-        optionsPanel.add(nameButton);
 
         statsPanel.setBackground(Color.WHITE);
         statsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -70,12 +121,6 @@ public class HorseCustomiseGUI implements ActionListener {
     public void setUpButton() {
         backButton.setBackground(Color.WHITE);
         backButton.addActionListener(this);
-
-        nameButton.setBackground(Color.WHITE);
-        nameButton.addActionListener(this);
-
-        breedButton.setBackground(Color.WHITE);
-        breedButton.addActionListener(this);
 
         nextButton.setBackground(Color.WHITE);
         nextButton.addActionListener(this);
@@ -91,7 +136,6 @@ public class HorseCustomiseGUI implements ActionListener {
         MainMenuGUI mainMenuGUI = new MainMenuGUI();
         frame.setVisible(false);
         mainMenuGUI.setUpGUI();
-
     }
 
     public void nextButtonActionPerformed() {
@@ -107,8 +151,10 @@ public class HorseCustomiseGUI implements ActionListener {
         if (e.getSource() == backButton) {
             backButtonActionPerformed();
         }
-        if (e.getSource() == nextButton) {
+        else if (e.getSource() == nextButton) {
             nextButtonActionPerformed();
         }
+
+
     }
 }

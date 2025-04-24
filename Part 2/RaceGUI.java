@@ -9,11 +9,14 @@ public class RaceGUI implements ActionListener {
     private JPanel optionsPanel = new JPanel();
     private JPanel extraInfoPanel = new JPanel();
     private JPanel raceInfoPanel = new JPanel();
+    private JPanel racePanel = new JPanel();
 
     private JComboBox<Integer> lanesComboBox;
     private JComboBox<String> trackTypeComboBox;
     private JComboBox<String> weatherConditionComboBox;
-    private TrackPanel trackPanel = new TrackPanel();
+    private JComboBox<Integer> horseNumberComboBox;
+
+
 
     public RaceGUI(int horseNum) {
         this.horseNum = horseNum;
@@ -45,12 +48,21 @@ public class RaceGUI implements ActionListener {
         weatherConditionComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose weather condition"));
         weatherConditionComboBox.setSelectedIndex(-1);
         weatherConditionComboBox.addActionListener(this);
+
+//        Integer[] horses = {2, 3, 4, 5};
+//        horseNumberComboBox = new JComboBox<>(horses);
+//        horseNumberComboBox.setToolTipText("Select number of Horses");
+//        horseNumberComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose weather condition"));
+//        horseNumberComboBox.setSelectedIndex(-1);
+//        horseNumberComboBox.addActionListener(this);
+
+
     }
 
     public void setUpFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Simulate your race!");
-        mainFrame.add(trackPanel, BorderLayout.CENTER);
+        mainFrame.add(racePanel, BorderLayout.CENTER);
         mainFrame.add(optionsPanel, BorderLayout.NORTH);
         mainFrame.add(raceInfoPanel, BorderLayout.EAST);
         mainFrame.add(extraInfoPanel, BorderLayout.SOUTH);
@@ -65,14 +77,16 @@ public class RaceGUI implements ActionListener {
         optionsPanel.add(lanesComboBox);
         optionsPanel.add(trackTypeComboBox);
         optionsPanel.add(weatherConditionComboBox);
+
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == lanesComboBox && lanesComboBox.getSelectedItem() != null) {
-            trackPanel.setLaneCount((Integer) lanesComboBox.getSelectedItem());
+
         } else if (e.getSource() == trackTypeComboBox && trackTypeComboBox.getSelectedItem() != null) {
-            trackPanel.setTrackType(trackTypeComboBox.getSelectedItem().toString());
+
         }
     }
 }
