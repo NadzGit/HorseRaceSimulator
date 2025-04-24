@@ -32,9 +32,11 @@ public class MainMenuGUI implements ActionListener {
     }
 
     public void goToTrackGUI() {
-        System.out.println("Going to Horse Customisation GUI");
-        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
-        horseCustomiseGUI.setUpGUI();
+        RaceGUI raceGUI = new RaceGUI(4);
+        raceGUI.setUpGUI();
+//        System.out.println("Going to Horse Customisation GUI");
+//        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
+//        horseCustomiseGUI.setUpGUI();
     }
 
     public void goToStatsGUI() {
