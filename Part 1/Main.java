@@ -2,9 +2,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         MainMenuGUI mainMenuGUI = new MainMenuGUI();
         mainMenuGUI.setUpGUI();
-        Race newRace = new Race(20);
-        Horse horse1 = new Horse('Ә', "Pookie", 0.0);
-        Horse horse2 = new Horse('Ѱ', "Wookie", 1.1);
+
+        Race newRace = new Race(20, 5);
+        Horse horse1 = new Horse('Ә', "Pookie", 0.2);
+        Horse horse2 = new Horse('Ѱ', "Wookie", 0.6);
         Horse horse3 = new Horse('Ѿ', "Woo", 0.99999);
 
         newRace.addHorse(horse1, 1);
