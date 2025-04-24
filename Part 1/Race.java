@@ -178,6 +178,8 @@ public class Race
     private void printLane(Horse theHorse) {
         //calculate how many spaces are needed before
         //and after the horse
+
+
         int spacesBefore = theHorse.getDistanceTravelled();
         int spacesAfter = raceLength - theHorse.getDistanceTravelled();
 
