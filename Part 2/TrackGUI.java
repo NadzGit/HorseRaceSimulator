@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class TrackGUI implements ActionListener {
     private JFrame frame = new JFrame();
@@ -11,6 +10,8 @@ public class TrackGUI implements ActionListener {
     private JPanel optionsPanel;
     private JButton backButton;
     private JButton straightTrackButton;
+    private JButton figure8Button = new JButton("Figure 8");
+    private ImageIcon figure8Icon = new ImageIcon("Part 2/figure8.png");
     private JButton ovalTrackButton;
     private JLabel TrackLabel;
     private ImageIcon straightTrackIcon;
@@ -23,9 +24,9 @@ public class TrackGUI implements ActionListener {
 
     public void backButtonActionPerformed() {
         System.out.println("backButtonActionPerformed");
-        MainMenuGUI mainMenuGUI = new MainMenuGUI();
+        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
         frame.setVisible(false);
-        mainMenuGUI.setUpGUI();
+        horseCustomiseGUI.setUpGUI();
     }
 
     public String straightTrackButtonActionPerformed() {
@@ -37,8 +38,18 @@ public class TrackGUI implements ActionListener {
         lanesComboBox.setVisible(TrackLabel.isVisible());
         mainPanel.add(lanesComboBox, BorderLayout.WEST);
         return "Straight Track";
+    }
 
-
+    public String figure8ButtonActionPerformed() {
+        TrackLabel.removeAll();
+        TrackLabel.setIcon(figure8Icon);
+        System.out.println("figure8ButtonActionPerformed");
+        confirmButton.setVisible(true);
+        TrackLabel.setVisible(true);
+        TrackLabel.setIcon(figure8Icon);
+        lanesComboBox.setVisible(TrackLabel.isVisible());
+        mainPanel.add(lanesComboBox, BorderLayout.WEST);
+        return "Figure 8 Track";
     }
 
     public String ovalTrackButtonActionPerformed() {
@@ -107,6 +118,8 @@ public class TrackGUI implements ActionListener {
         optionsPanel.add(straightTrackButton);
         optionsPanel.add(Box.createVerticalStrut(100));
         optionsPanel.add(ovalTrackButton);
+        optionsPanel.add(Box.createVerticalStrut(100));
+        optionsPanel.add(figure8Button);
 
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
@@ -134,6 +147,7 @@ public class TrackGUI implements ActionListener {
         ovalTrackButton.setForeground(Color.black);
         ovalTrackButton.addActionListener(this);
         ovalTrackButton.setFocusable(false);
+
         confirmButton = new JButton("Confirm");
         confirmButton.setBackground(Color.WHITE);
         confirmButton.setForeground(Color.black);
@@ -141,6 +155,14 @@ public class TrackGUI implements ActionListener {
         confirmButton.setFocusable(false);
         confirmButton.setVisible(false);
         confirmButton.setBounds(200, 200, 100, 50);
+
+
+        figure8Button.setBackground(Color.WHITE);
+        figure8Button.setForeground(Color.black);
+        figure8Button.addActionListener(this);
+        figure8Button.setFocusable(false);
+
+
     }
 
     public void setUpComboBox() {
@@ -167,6 +189,10 @@ public class TrackGUI implements ActionListener {
         }
         else if (e.getSource() == lanesComboBox) {
             System.out.println(lanesComboBox.getSelectedItem());
+        }
+        else if (e.getSource() == figure8Button) {
+            trackType = figure8ButtonActionPerformed();
+
         }
         else if (e.getSource() == confirmButton) {
             System.out.println("confirmButtonActionPerformed");
