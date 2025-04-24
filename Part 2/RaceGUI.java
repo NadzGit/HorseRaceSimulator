@@ -3,18 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RaceGUI extends JLabel implements ActionListener, ListCellRenderer{
+public class RaceGUI implements ActionListener {
     private int horseNum;
-    private String title;
     private JFrame mainFrame;
-    private JPanel racePanel = new JPanel();
     private JPanel optionsPanel = new JPanel();
     private JPanel extraInfoPanel = new JPanel();
     private JPanel raceInfoPanel = new JPanel();
 
-    private JComboBox trackTypeComboBox;
-    private JComboBox weatherConditionComboBox;
-    private JComboBox lanesComboBox;
+    private JComboBox<Integer> lanesComboBox;
+    private JComboBox<String> trackTypeComboBox;
+    private JComboBox<String> weatherConditionComboBox;
+    private TrackPanel trackPanel = new TrackPanel();
 
     public RaceGUI(int horseNum) {
         this.horseNum = horseNum;
@@ -26,42 +25,38 @@ public class RaceGUI extends JLabel implements ActionListener, ListCellRenderer{
         setUpFrame();
     }
 
-    public RaceGUI (String newTitle) {
-        title = newTitle;
-    }
-
     public void setUpComboBoxes() {
         Integer[] lanes = {2, 3, 4, 5};
-        lanesComboBox = new JComboBox(lanes);
+        lanesComboBox = new JComboBox<>(lanes);
         lanesComboBox.addActionListener(this);
         lanesComboBox.setSelectedIndex(-1);
-        lanesComboBox.setRenderer(new RaceGUI("Set number of lanes"));
+        lanesComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Set number of lanes"));
 
         String[] trackTypes = {"Straight", "Figure 8", "Oval"};
-        trackTypeComboBox = new JComboBox(trackTypes);
+        trackTypeComboBox = new JComboBox<>(trackTypes);
         trackTypeComboBox.setToolTipText("Select track type");
-        trackTypeComboBox.setRenderer(new RaceGUI("Choose track type"));
+        trackTypeComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose track type"));
         trackTypeComboBox.setSelectedIndex(-1);
         trackTypeComboBox.addActionListener(this);
 
-        String[] weatherConditions = {"Wet","Dry", "Hot"};
-        weatherConditionComboBox = new JComboBox(weatherConditions);
+        String[] weatherConditions = {"Wet", "Dry", "Hot"};
+        weatherConditionComboBox = new JComboBox<>(weatherConditions);
         weatherConditionComboBox.setToolTipText("Select weather condition");
-        weatherConditionComboBox.setRenderer(new RaceGUI("Choose weather condition"));
+        weatherConditionComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose weather condition"));
         weatherConditionComboBox.setSelectedIndex(-1);
         weatherConditionComboBox.addActionListener(this);
     }
+
     public void setUpFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Simulate your race!");
-        mainFrame.add(racePanel, BorderLayout.CENTER);
+        mainFrame.add(trackPanel, BorderLayout.CENTER);
         mainFrame.add(optionsPanel, BorderLayout.NORTH);
         mainFrame.add(raceInfoPanel, BorderLayout.EAST);
         mainFrame.add(extraInfoPanel, BorderLayout.SOUTH);
         mainFrame.setVisible(true);
         mainFrame.setSize(1080, 1080);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     public void setUpPanels() {
@@ -70,23 +65,33 @@ public class RaceGUI extends JLabel implements ActionListener, ListCellRenderer{
         optionsPanel.add(lanesComboBox);
         optionsPanel.add(trackTypeComboBox);
         optionsPanel.add(weatherConditionComboBox);
-
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == lanesComboBox && lanesComboBox.getSelectedItem() != null) {
+            trackPanel.setLaneCount((Integer) lanesComboBox.getSelectedItem());
+        } else if (e.getSource() == trackTypeComboBox && trackTypeComboBox.getSelectedItem() != null) {
+            trackPanel.setTrackType(trackTypeComboBox.getSelectedItem().toString());
+        }
+    }
+}
 
+class ComboBoxPlaceholderRenderer extends JLabel implements ListCellRenderer<Object> {
+    private String title;
+
+    public ComboBoxPlaceholderRenderer(String title) {
+        this.title = title;
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (index == -1 && value == null) {
             setText(title);
-        }
-        else{
+        } else {
             setText(value.toString());
         }
         return this;
     }
 }
+
