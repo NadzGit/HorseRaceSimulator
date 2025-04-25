@@ -1,4 +1,3 @@
-import java.util.Scanner;
 /**
  * Write a description of class Horse here.
  * 
@@ -21,20 +20,17 @@ public class Horse
      */
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
-        Scanner scanner = new Scanner(System.in);
        this.fall = false;
        this.distance = 0;
        this.NAME = horseName;
        this.confidence = horseConfidence;
        this.Symbol = horseSymbol;
 
-       if (horseConfidence > 1.0 || horseConfidence < 0.0)  {
-           System.out.println("Invalid Horse Confidence");
+       if (horseConfidence <= 0.0) {
+           this.confidence = 0.1;
        }
-       while ((this.confidence < 0.0 || this.confidence > 1.0)){
-       System.out.println("Confidence must be in between 0.0 and 1.0 inclusive.");
-            System.out.println("Confidence of " + this.NAME + " is currently: " + this.confidence + " (invalid)");
-            this.confidence = Double.parseDouble(scanner.nextLine());
+       else if (horseConfidence >= 1.0) {
+           this.confidence = 0.9;
        }
     }
     

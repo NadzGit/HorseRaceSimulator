@@ -4,9 +4,9 @@ public class Main {
         mainMenuGUI.setUpGUI();
 
         Race newRace = new Race(20, 5);
-        Horse horse1 = new Horse('Ә', "Pookie", 0.2);
-        Horse horse2 = new Horse('Ѱ', "Wookie", 0.6);
-        Horse horse3 = new Horse('Ѿ', "Woo", 0.99999);
+        Horse horse1 = new Horse('Ә', "Pookie", 1.1);
+        Horse horse2 = new Horse('Ѱ', "Wookie", 1.01);
+        Horse horse3 = new Horse('Ѿ', "Woo", 0.01);
 
         newRace.addHorse(horse1, 1);
         newRace.addHorse(horse2, 2);
