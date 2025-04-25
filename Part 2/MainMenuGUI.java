@@ -31,12 +31,6 @@ public class MainMenuGUI implements ActionListener {
         button.addActionListener(this);
     }
 
-    public void goToTrackGUI() {
-        RaceGUI raceGUI = new RaceGUI(4);
-        raceGUI.setUpGUI();
-
-    }
-
     public void goToStatsGUI() {
         System.out.print("Going to Stats GUI");
     }
@@ -49,6 +43,7 @@ public class MainMenuGUI implements ActionListener {
         System.out.println("Going to Horse Customisation GUI");
         HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
         horseCustomiseGUI.setUpGUI();
+
     }
 
     public void setUpGUI () {
@@ -154,7 +149,7 @@ public class MainMenuGUI implements ActionListener {
             goToStatsGUI();
         }
         else if (e.getSource() == startButton) {
-            goToTrackGUI();
+            goToHorsesGUI();
 
            optionsPanel.setVisible(false);
            mainMenuPanel.setVisible(false);
