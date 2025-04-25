@@ -4,7 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RaceGUI implements ActionListener {
-    private int horseNum;
+    private int laneNum = 0;
+    private int horseNum = 0;
     private JFrame mainFrame;
     private JPanel optionsPanel = new JPanel();
     private JPanel extraInfoPanel = new JPanel();
@@ -14,7 +15,7 @@ public class RaceGUI implements ActionListener {
     private JComboBox<Integer> lanesComboBox;
     private JComboBox<String> trackTypeComboBox;
     private JComboBox<String> weatherConditionComboBox;
-    private JComboBox<Integer> horseNumberComboBox;
+
 
 
 
@@ -49,12 +50,7 @@ public class RaceGUI implements ActionListener {
         weatherConditionComboBox.setSelectedIndex(-1);
         weatherConditionComboBox.addActionListener(this);
 
-//        Integer[] horses = {2, 3, 4, 5};
-//        horseNumberComboBox = new JComboBox<>(horses);
-//        horseNumberComboBox.setToolTipText("Select number of Horses");
-//        horseNumberComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose weather condition"));
-//        horseNumberComboBox.setSelectedIndex(-1);
-//        horseNumberComboBox.addActionListener(this);
+
 
 
     }
@@ -68,7 +64,11 @@ public class RaceGUI implements ActionListener {
         mainFrame.add(extraInfoPanel, BorderLayout.SOUTH);
         mainFrame.setVisible(true);
         mainFrame.setSize(1080, 1080);
+        TrackConfigGUI trackConfigGUI = new TrackConfigGUI(laneNum);
+
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
     }
 
     public void setUpPanels() {
@@ -84,6 +84,7 @@ public class RaceGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == lanesComboBox && lanesComboBox.getSelectedItem() != null) {
+            laneNum = Integer.parseInt(lanesComboBox.getSelectedItem().toString());
 
         } else if (e.getSource() == trackTypeComboBox && trackTypeComboBox.getSelectedItem() != null) {
 

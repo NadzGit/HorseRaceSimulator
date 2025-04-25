@@ -9,21 +9,6 @@ public class HorseCustomiseGUI{
     //frames
     private JFrame frame = new JFrame();
 
-    //labels
-    private JLabel titleLabel = new JLabel("Customise your Horse");
-
-    //panels
-    private JPanel mainPanel = new JPanel();
-    private JPanel titlePanel = new JPanel();
-    private JPanel optionsPanel = new JPanel();
-    private JPanel statsPanel = new JPanel();
-
-
-    //buttons
-    private JButton nextButton = new JButton("Next");
-    private JButton backButton = new JButton("Back");
-
-
     public void setUpGUI() {
         while (horseNum < 2 || horseNum > 5) {
             horseNum = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many horses would you like in your race? (2-5)", "Horse Num",
