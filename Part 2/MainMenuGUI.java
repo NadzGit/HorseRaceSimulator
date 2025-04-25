@@ -32,9 +32,9 @@ public class MainMenuGUI implements ActionListener {
     }
 
     public void goToTrackGUI() {
-        System.out.print("Going to Track GUI");
-        TrackGUI trackGUI = new TrackGUI();
-        trackGUI.setUpGUI();
+        System.out.println("Going to Horse Customisation GUI");
+        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
+        horseCustomiseGUI.setUpGUI();
     }
 
     public void goToStatsGUI() {
@@ -108,7 +108,7 @@ public class MainMenuGUI implements ActionListener {
         optionsPanel.add(bettingButton);
 
         mainMenuPanel = new JPanel();
-        mainMenuPanel.setBackground(Color.black);
+        mainMenuPanel.setBackground(Color.white);
         mainMenuPanel.add(startButton);
 
     }
