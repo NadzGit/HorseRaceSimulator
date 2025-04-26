@@ -1,63 +1,114 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class HorseCustomiseGUI {
-    private int horseNum = 0;
-    private final horseCustomisationLogic customisationLogic = new horseCustomisationLogic();
-    private final JFrame frame = new JFrame();
+public class HorseCustomiseGUI implements ActionListener {
+    //frames
+    private JFrame frame = new JFrame();
 
-    public int horseNumSetUp() {
-        while (horseNum < 2 || horseNum > 5) {
-            try {
-                horseNum = Integer.parseInt(JOptionPane.showInputDialog(frame,
-                        "How many horses would you like in your race? (2-5)",
-                        "Horse Number",
-                        JOptionPane.QUESTION_MESSAGE));
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(frame, "Please enter a valid number between 2 and 5.");
-            }
-        }
-        return horseNum;
+    //labels
+    private JLabel titleLabel = new JLabel("Customise your Horse");
+
+    //panels
+    private JPanel mainPanel = new JPanel();
+    private JPanel titlePanel = new JPanel();
+    private JPanel optionsPanel = new JPanel();
+    private JPanel statsPanel = new JPanel();
+
+
+    //buttons
+    private JButton nextButton = new JButton("Next");
+    private JButton backButton = new JButton("Back");
+    private JButton breedButton = new JButton("Breed");
+    private JButton nameButton = new JButton("Name");
+    private JButton thoroughBredButton = new JButton("ThoroughBred");
+    private JButton ArabianButton = new JButton("Arabian");
+    private JButton QuarterHorse = new JButton("Quarter Horse");
+
+    public void setUpGUI() {
+        setUpButton();
+        setUpPanel();
+        setUpFrame();
     }
 
-    public Horse[] createHorseOptions(int horseNum) {
-        Horse[] horses = new Horse[horseNum];
-        String[] breedOptions = {"Arabian", "Quarter", "Thorough Bred"};
-        Character[] breedChar = {'A', 'Q', 'T'};
+    public void setUpFrame() {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Customise your Horse");
+        frame.setSize(1080, 1080);
+        frame.getContentPane().setBackground(Color.WHITE);
+        frame.setLayout(new BorderLayout());
+        frame.add(titlePanel, BorderLayout.NORTH);
+        frame.add(optionsPanel, BorderLayout.WEST);
+        frame.add(statsPanel, BorderLayout.SOUTH);
+        frame.add(mainPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
 
-        for (int i = 0; i < horseNum; i++) { // Start from 0 not 1
-            String name = JOptionPane.showInputDialog(frame, "Name of horse " + (i + 1) + ":",
-                    "Name your horse", JOptionPane.QUESTION_MESSAGE);
+    public void setUpPanel() {
+        titlePanel.setBackground(Color.WHITE);
+        titlePanel.add(titleLabel);
+        titlePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-            if (name == null || name.trim().isEmpty()) {
-                i--; // Retry naming this horse
-                continue;
-            }
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.add(nextButton);
 
-            JComboBox<Character> horseSymbolsComboBox = new JComboBox<>(breedChar);
-            JComboBox<String> breedsComboBox = new JComboBox<>(breedOptions);
+        optionsPanel.setBackground(Color.WHITE);
+        optionsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+        optionsPanel.add(backButton);
+        optionsPanel.add(Box.createVerticalStrut(50));
+        optionsPanel.add(breedButton);
+        optionsPanel.add(Box.createVerticalStrut(50));
+        optionsPanel.add(nameButton);
 
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(new JLabel("Select a horse symbol:"));
-            panel.add(horseSymbolsComboBox);
-            panel.add(new JLabel("Select a breed:"));
-            panel.add(breedsComboBox);
+        statsPanel.setBackground(Color.WHITE);
+        statsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        mainPanel.setBackground(Color.WHITE);
+    }
 
-            int result = JOptionPane.showConfirmDialog(frame, panel,
-                    "Choose Horse Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    public void setUpButton() {
+        backButton.setBackground(Color.WHITE);
+        backButton.addActionListener(this);
 
-            if (result != JOptionPane.OK_OPTION) {
-                i--; // Retry this horse setup if canceled
-                continue;
-            }
+        nameButton.setBackground(Color.WHITE);
+        nameButton.addActionListener(this);
 
-            char selectedHorseSymbol = (char) horseSymbolsComboBox.getSelectedItem();
-            String selectedBreed = breedsComboBox.getSelectedItem().toString();
-            double confidence = customisationLogic.confidenceDecider(selectedBreed);
+        breedButton.setBackground(Color.WHITE);
+        breedButton.addActionListener(this);
 
-            horses[i] = new Horse(selectedHorseSymbol, name, confidence);
+        nextButton.setBackground(Color.WHITE);
+        nextButton.addActionListener(this);
+    }
+
+    public void breedButtonActionPerformed() {
+        System.out.println("breedButtonActionPerformed");
+
+    }
+
+    public void backButtonActionPerformed() {
+        System.out.println("backButtonActionPerformed");
+        MainMenuGUI mainMenuGUI = new MainMenuGUI();
+        frame.setVisible(false);
+        mainMenuGUI.setUpGUI();
+
+    }
+
+    public void nextButtonActionPerformed() {
+        frame.setVisible(false);
+        System.out.println("nextButtonActionPerformed");
+        TrackGUI trackGUI = new TrackGUI();
+        trackGUI.setUpGUI();
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == backButton) {
+            backButtonActionPerformed();
         }
-
-        return horses;
+        if (e.getSource() == nextButton) {
+            nextButtonActionPerformed();
+        }
     }
 }

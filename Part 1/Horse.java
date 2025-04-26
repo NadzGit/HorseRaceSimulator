@@ -12,7 +12,6 @@ public class Horse
     private int distance; //must be whole number
     private boolean fall;
     private double confidence;
-    private String colour;
 
 
     //Constructor of class Horse
@@ -40,13 +39,6 @@ public class Horse
     //Other methods of class Horse
     public void fall() throws InterruptedException {
         this.fall = true;
-    }
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
-
-    public String getColour(){
-        return colour;
     }
 
     
