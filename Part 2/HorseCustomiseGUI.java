@@ -1,71 +1,63 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-public class HorseCustomiseGUI{
+public class HorseCustomiseGUI {
     private int horseNum = 0;
-    //frames
-    private JFrame frame = new JFrame();
+    private final horseCustomisationLogic customisationLogic = new horseCustomisationLogic();
+    private final JFrame frame = new JFrame();
 
-    public void setUpGUI() {
+    public int horseNumSetUp() {
         while (horseNum < 2 || horseNum > 5) {
-            horseNum = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many horses would you like in your race? (2-5)", "Horse Num",
-                    JOptionPane.QUESTION_MESSAGE));
+            try {
+                horseNum = Integer.parseInt(JOptionPane.showInputDialog(frame,
+                        "How many horses would you like in your race? (2-5)",
+                        "Horse Number",
+                        JOptionPane.QUESTION_MESSAGE));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(frame, "Please enter a valid number between 2 and 5.");
+            }
         }
-        createHorseOptions();
-        RaceGUI raceGUI = new RaceGUI(horseNum);
-        raceGUI.setUpGUI();
+        return horseNum;
     }
 
-    public double confidenceDecider(String breed) {
-        double confidence = 0.0;
-        if (breed.equals("Arabian")) {
-            confidence = 0.5;
-        } else if (breed.equals("Quarter")) {
-            confidence = 0.4;
-        } else if (breed.equals("Thorough Bred")) {
-            confidence = 0.7;
-        }
-        return confidence;
-    }
-
-    public void createHorseOptions() {
-        ArrayList<Horse> horses = new ArrayList<>();
+    public Horse[] createHorseOptions(int horseNum) {
+        Horse[] horses = new Horse[horseNum];
         String[] breedOptions = {"Arabian", "Quarter", "Thorough Bred"};
         Character[] breedChar = {'A', 'Q', 'T'};
-        String[] colourOptions = {"Black", "Brown", "White"};
 
-        for (int i = 1; i <= horseNum; i++) {
-            String name = JOptionPane.showInputDialog(frame, "Name of horse " + i + ":", "Name your horse", JOptionPane.QUESTION_MESSAGE);
-            if (name == null || name.trim().isEmpty()) continue;
+        for (int i = 0; i < horseNum; i++) { // Start from 0 not 1
+            String name = JOptionPane.showInputDialog(frame, "Name of horse " + (i + 1) + ":",
+                    "Name your horse", JOptionPane.QUESTION_MESSAGE);
+
+            if (name == null || name.trim().isEmpty()) {
+                i--; // Retry naming this horse
+                continue;
+            }
 
             JComboBox<Character> horseSymbolsComboBox = new JComboBox<>(breedChar);
             JComboBox<String> breedsComboBox = new JComboBox<>(breedOptions);
-            JComboBox<String> colorsComboBox = new JComboBox<>(colourOptions);
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
             panel.add(new JLabel("Select a horse symbol:"));
             panel.add(horseSymbolsComboBox);
             panel.add(new JLabel("Select a breed:"));
             panel.add(breedsComboBox);
-            panel.add(new JLabel("Select a color:"));
-            panel.add(colorsComboBox);
 
-            int result = JOptionPane.showConfirmDialog(frame, panel, "Choose Horse Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (result != JOptionPane.OK_OPTION) continue;
+            int result = JOptionPane.showConfirmDialog(frame, panel,
+                    "Choose Horse Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result != JOptionPane.OK_OPTION) {
+                i--; // Retry this horse setup if canceled
+                continue;
+            }
 
             char selectedHorseSymbol = (char) horseSymbolsComboBox.getSelectedItem();
             String selectedBreed = breedsComboBox.getSelectedItem().toString();
-            double confidence = confidenceDecider(selectedBreed);
-            String colour = colourOptions[colorsComboBox.getSelectedIndex()];
+            double confidence = customisationLogic.confidenceDecider(selectedBreed);
 
-            Horse horse;
-            horses.add(horse = new Horse(selectedHorseSymbol, name, confidence));
-            horse.setColour(colour);
-
+            horses[i] = new Horse(selectedHorseSymbol, name, confidence);
         }
+
+        return horses;
     }
 }
-
