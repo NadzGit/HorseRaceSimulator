@@ -20,10 +20,11 @@ public class HorseCustomiseGUI {
         return horseNum;
     }
 
-    public Horse[] createHorseOptions(int horseNum) {
-        Horse[] horses = new Horse[horseNum];
+    public HorsePart2[] createHorseOptions(int horseNum) {
+        HorsePart2[] horses = new HorsePart2[horseNum];
         String[] breedOptions = {"Arabian", "Quarter", "Thorough Bred"};
         Character[] breedChar = {'A', 'Q', 'T'};
+        String[] ColorOptions = {"Brown", "White", "Black"};
 
         for (int i = 0; i < horseNum; i++) { // Start from 0 not 1
             String name = JOptionPane.showInputDialog(frame, "Name of horse " + (i + 1) + ":",
@@ -36,26 +37,33 @@ public class HorseCustomiseGUI {
 
             JComboBox<Character> horseSymbolsComboBox = new JComboBox<>(breedChar);
             JComboBox<String> breedsComboBox = new JComboBox<>(breedOptions);
+            JComboBox<String> colorsComboBox = new JComboBox<>(ColorOptions);
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
             panel.add(new JLabel("Select a horse symbol:"));
             panel.add(horseSymbolsComboBox);
             panel.add(new JLabel("Select a breed:"));
             panel.add(breedsComboBox);
+            panel.add(new JLabel("Select a color:"));
+            panel.add(colorsComboBox);
 
             int result = JOptionPane.showConfirmDialog(frame, panel,
                     "Choose Horse Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result != JOptionPane.OK_OPTION) {
-                i--; // Retry this horse setup if canceled
+                i--;
                 continue;
             }
 
             char selectedHorseSymbol = (char) horseSymbolsComboBox.getSelectedItem();
             String selectedBreed = breedsComboBox.getSelectedItem().toString();
+            String selectedColor = colorsComboBox.getSelectedItem().toString();
             double confidence = customisationLogic.confidenceDecider(selectedBreed);
 
-            horses[i] = new Horse(selectedHorseSymbol, name, confidence);
+            horses[i] = new HorsePart2(selectedHorseSymbol, name, confidence);
+            horses[i].setColour(selectedColor);
+            horses[i].setBreed(selectedBreed);
+            horses[i].setFall();
         }
 
         return horses;

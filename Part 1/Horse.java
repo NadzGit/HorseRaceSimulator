@@ -13,7 +13,7 @@ public class Horse
     private int distance; //must be whole number
     private boolean fall;
     private double confidence;
-    private String colour;
+
 
 
     //Constructor of class Horse
@@ -45,15 +45,8 @@ public class Horse
     public void fall() throws InterruptedException {
         this.fall = true;
     }
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
 
-    public String getColour(){
-        return colour;
-    }
 
-    
     public double getConfidence()
     {
         return this.confidence;
@@ -69,7 +62,7 @@ public class Horse
         return this.NAME;
     }
     
-    public char getSymbol()
+    public Character getSymbol()
     {
         return this.Symbol;
     }

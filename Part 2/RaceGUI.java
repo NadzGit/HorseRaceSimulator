@@ -15,7 +15,7 @@ public class RaceGUI implements ActionListener {
     private JPanel racePanel = new JPanel();
     private JPanel horseEditPanel = new JPanel();
 
-    private Horse[] horses;
+    private HorsePart2[] horses;
     private HorseMoveLogic logic;
 
     private final HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
@@ -32,7 +32,6 @@ public class RaceGUI implements ActionListener {
             horseNum = horseCustomiseGUI.horseNumSetUp();
             horses = horseCustomiseGUI.createHorseOptions(horseNum);
 
-            logic = new HorseMoveLogic(laneNum, horses);
             trackConfigGUI = new TrackConfigGUI(laneNum);
 
             setUpButton();
@@ -41,10 +40,17 @@ public class RaceGUI implements ActionListener {
             setUpFrame();
         });
     }
+    private void checkIfReadyToRace() {
+        boolean ready = lanesComboBox.getSelectedItem() != null
+                && trackTypeComboBox.getSelectedItem() != null
+                && weatherConditionComboBox.getSelectedItem() != null;
+        startRaceButton.setEnabled(ready);
+    }
 
     private void setUpButton() {
         startRaceButton.addActionListener(this);
         startRaceButton.setEnabled(true);
+        startRaceButton.setEnabled(false);
     }
 
     private void setUpComboBoxes() {
@@ -105,13 +111,14 @@ public class RaceGUI implements ActionListener {
         } else if (e.getSource() == startRaceButton) {
             handleStartRace();
         }
+        checkIfReadyToRace();
     }
 
     private void handleLaneSelection() {
         if (lanesComboBox.getSelectedItem() != null) {
             laneNum = (Integer) lanesComboBox.getSelectedItem();
             trackConfigGUI.updateLaneNum(laneNum);
-            logic = new HorseMoveLogic(laneNum, horses);
+            logic = new HorseMoveLogic(laneNum, horses, (String) weatherConditionComboBox.getSelectedItem());
         }
     }
 
@@ -119,10 +126,11 @@ public class RaceGUI implements ActionListener {
         if (trackTypeComboBox.getSelectedItem() != null) {
             trackType = (String) trackTypeComboBox.getSelectedItem();
             if (trackType.equals("Straight")) {
-                logic = new HorseMoveLogic(laneNum, horses);
+                logic = new HorseMoveLogic(laneNum, horses, weatherConditionComboBox.getSelectedItem() != null ? weatherConditionComboBox.getSelectedItem().toString() : "");
             }
         }
     }
+
 
     private void handleStartRace() {
         racePanel.removeAll();
