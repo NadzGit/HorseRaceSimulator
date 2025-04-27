@@ -1,164 +1,105 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenuGUI implements ActionListener {
-    private JLabel title;
-    private ImageIcon gameIcon;
-    private ImageIcon horseIcon;
-    private ImageIcon homeIcon;
-    private Border horseTitleborder;
-    private JPanel optionsPanel;
-    private JButton homeButton;
-    private JButton HorsesButton;
-    private JButton statsButton;
-    private JButton bettingButton;
+    private JFrame frame;
     private JButton startButton;
-    private JPanel mainMenuPanel;
-    public JFrame frame = new JFrame();
+
+    private JPanel sideBar = new JPanel();
+    private JButton horseButton = new JButton("Horses");
+
+    private ImageIcon horseIcon = new ImageIcon("Part 2/horse.png");
+    ImageIcon mainMenuBG;
+    private BackgroundPanel BGImage;
 
 
-    public void styleButton(JButton button, String text) {
-        button.setText(text);
-        button.setOpaque(true);
-        button.setBackground(Color.GRAY);
-        button.setForeground(Color.BLACK);
-        button.setFont(new Font("Comic Sans", Font.BOLD, 20));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setFocusable(false);
-        button.addActionListener(this);
-    }
 
-    public void goToTrackGUI() {
-        System.out.println("Going to Horse Customisation GUI");
-        HorseCustomiseGUI horseCustomiseGUI = new HorseCustomiseGUI();
-        horseCustomiseGUI.setUpGUI();
-    }
 
-    public void goToStatsGUI() {
-        System.out.print("Going to Stats GUI");
-    }
+    public void setUpGUI() {
+        ImageIcon originalIcon = new ImageIcon("Part 2/mainMenuBG.jpg");
+        mainMenuBG = originalIcon; // no need to scale here anymore
 
-    public void goToMainMenuGUI() {
-        System.out.print("Going to Main Menu GUI");
-    }
+        BGImage = new BackgroundPanel(mainMenuBG);
+        BGImage.setLayout(new BorderLayout());
 
-    public void goToHorsesGUI() {
-        System.out.print("Going to Horses GUI");
-    }
-
-    public void setUpGUI () {
-        //Images
-        gameIcon = new ImageIcon("Part 2/horse.png");
-        horseIcon = new ImageIcon("Part 2/horseimage.png");
-        homeIcon = new ImageIcon("home.png");
-
-        horseTitleborder = BorderFactory.createLineBorder(Color.cyan, 3);
-        setUpButtons();
-        setUpLabels();
-        setUpPanels();
-        setUpFrame();
-
-    }
-
-    public void setUpFrame() {
-        frame.setSize(1080, 1080);
-        frame.setTitle("Horse Race Simulator");
-        frame.setIconImage(gameIcon.getImage());
-        frame.setBackground(Color.WHITE);
-        frame.setLayout(new BorderLayout());
-
-        frame.add(optionsPanel, BorderLayout.WEST);
-        frame.add(title, BorderLayout.NORTH);
-        frame.add(mainMenuPanel, BorderLayout.CENTER);
+        frame = new JFrame("Horse Race Simulator");
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Optional: Start maximized
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(horseIcon.getImage());
+
+        startButton = new JButton("Start Race");
+
+        sideBar.setLayout(new FlowLayout());
+        sideBar.setOpaque(false);
+        sideBar.add(horseButton);
+        styleButton(horseButton);
+        addHoverEffect(horseButton);
+        styleButton(startButton);
+        addHoverEffect(startButton);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
+        mainPanel.add(startButton);
+
+        BGImage.add(sideBar, BorderLayout.WEST);
+        BGImage.add(mainPanel, BorderLayout.CENTER);
+
+        frame.setContentPane(BGImage);
         frame.setVisible(true);
     }
 
 
-    public void setUpLabels() {
-        title = new JLabel();
-        title.setIcon(horseIcon);
-        title.setText("Horse Race Simulator");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-
-        title.setForeground(Color.DARK_GRAY);
-        title.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        title.setBackground(Color.WHITE);
-        title.setOpaque(true);
-        title.setBorder(horseTitleborder);
-
-
+    private void styleButton(JButton button) {
+        button.setFocusPainted(false);
+        button.addActionListener(this);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Serif", Font.BOLD, 20));
     }
-
-    public void setUpPanels() {
-        //panel stuff
-
-        optionsPanel = new JPanel();
-        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
-        optionsPanel.setBackground(Color.GRAY);
-        optionsPanel.add(homeButton);
-        optionsPanel.add(Box.createVerticalStrut(50));
-        optionsPanel.add(HorsesButton);
-        optionsPanel.add(Box.createVerticalStrut(50));
-        optionsPanel.add(statsButton);
-        optionsPanel.add(Box.createVerticalStrut(50));
-        optionsPanel.add(bettingButton);
-
-        mainMenuPanel = new JPanel();
-        mainMenuPanel.setBackground(Color.white);
-        mainMenuPanel.add(startButton);
-
+    private void addHoverEffect(JButton button) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setForeground(Color.YELLOW); // Highlight color when hovering
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setForeground(Color.WHITE); // Back to normal
+            }
+        });
     }
-
-    public void setUpButtons(){
-        //Home Button
-        homeButton = new JButton();
-        styleButton(homeButton, "Home");
-
-
-        //Horses Button
-        HorsesButton = new JButton();
-        styleButton(HorsesButton, "Horse");
-
-
-        // Stats Button
-        statsButton = new JButton();
-        styleButton(statsButton, "Stats");
-
-        //Betting Button
-        bettingButton = new JButton();
-       styleButton(bettingButton, "Betting");
-
-        //Start Button
-        startButton = new JButton();
-        styleButton(startButton, "Start");
-        startButton.setBackground(Color.green);
-    }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == homeButton) {
-            goToMainMenuGUI();
-        }
-        else if (e.getSource() == HorsesButton) {
-            goToHorsesGUI();
-        }
-        else if (e.getSource() == statsButton) {
-            goToStatsGUI();
-        }
-        else if (e.getSource() == startButton) {
-            goToTrackGUI();
+        if (e.getSource() == startButton) {
+            frame.setVisible(false);
+            RaceGUI raceGUI = new RaceGUI();
+            raceGUI.setUpGUI();
 
-           optionsPanel.setVisible(false);
-           mainMenuPanel.setVisible(false);
-           frame.setVisible(false);
-
+        }
+        if (e.getSource() == horseButton) {
+            HorseInfoGUI horseInfoGUI = new HorseInfoGUI();
+            horseInfoGUI.setUpGUI();
         }
     }
-
 }
+class BackgroundPanel extends JPanel {
+    private Image backgroundImage;
+
+    public BackgroundPanel(ImageIcon icon) {
+        this.backgroundImage = icon.getImage();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+    }
+}
+
+
