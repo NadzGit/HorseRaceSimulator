@@ -1,4 +1,4 @@
-//moves horses
+// Moves horses
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,11 +11,8 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
     private int laneNum;
     private JPanel parentFrame;
     private Runnable raceEndCallback;
-    private Race race = new Race(2, laneNum);
     private boolean raceFinished = false;
     private String weatherCondition;
-    private int x;
-    private int y;
 
     public HorseMoveLogic(int laneNum, HorsePart2[] horses, String weatherCondition) {
         this.laneNum = laneNum;
@@ -34,9 +31,9 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
 
     private boolean allFallen() {
         for (HorsePart2 h : horses) {
-            if (!h.hasFallen()) return false;  // Not all horses have fallen
+            if (!h.hasFallen()) return false;
         }
-        return true;  // All horses have fallen
+        return true;
     }
 
     @Override
@@ -47,66 +44,64 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
         // Draw the lanes
         g.setColor(Color.BLACK);
         for (int i = 0; i < laneNum; i++) {
-            int y = 500 + i * 40;
-            g.drawLine(100, y, 900, y);
+            int yLane = 500 + i * 40;
+            g.drawLine(100, yLane, 900, yLane);
         }
 
         // Draw the horses
         for (int i = 0; i < horses.length; i++) {
             HorsePart2 horse = horses[i];
-            setHorsePositionBasedOnWeather(horse, i);  // Handle horse position and confidence based on weather
+            int[] position = getHorsePositionBasedOnWeather(horse, i);
+            int horseX = position[0];
+            int horseY = position[1];
 
-            // Set horse color based on its breed or color
+            // Set horse color
             Color horseColor = getHorseColor(horse);
 
-            // Draw the horse's oval shape
+            // Draw horse body
             g.setColor(horseColor);
-            g.fillOval(x, y - 15, 30, 30);
-            g.drawOval(x, y - 15, 30, 30);
+            g.fillOval(horseX, horseY - 15, 30, 30);
+            g.drawOval(horseX, horseY - 15, 30, 30);
 
-            // Set up the font and calculate the position of the text
+            // Draw horse symbol
             g.setColor(Color.BLACK);
             String symbol = String.valueOf(horse.getSymbol());
             FontMetrics fm = g.getFontMetrics();
             int textWidth = fm.stringWidth(symbol);
             int textHeight = fm.getHeight();
-
-            // Center the symbol horizontally and vertically in the oval
-            int textX = x + (30 - textWidth) / 2;  // Center horizontally
-            int textY = y - 15 + (30 + textHeight) / 2 - fm.getDescent();  // Center vertically
-
-            // Draw the symbol centered inside the oval
+            int textX = horseX + (30 - textWidth) / 2;
+            int textY = horseY - 15 + (30 + textHeight) / 2 - fm.getDescent();
             g.drawString(symbol, textX, textY);
 
-            // Draw the horse name above the oval
-            g.drawString(horse.getName(), x, y - 20); // show horse name above
+            // Draw horse name
+            g.drawString(horse.getName(), horseX, horseY - 20);
         }
 
-        // Check if all horses have fallen
         if (raceFinished && allFallen()) {
             g.drawString("All horses fell! Race is over.", 500, 100);
-            raceFinished = true;
         }
     }
 
-    private void setHorsePositionBasedOnWeather(HorsePart2 horse, int i) {
-        // Set x and y based on weather condition
-        switch (weatherCondition) {
-            case "Dry":
-                x = 100 + horse.getDistanceTravelled() * 10;
-                y = 500 + i * 40;
-                break;
-            case "Wet":
-                x = 100 + horse.getDistanceTravelled() * 7;
-                y = 500 + i * 40;
-                horse.setConfidence(horse.getConfidence() - 0.2);
-                break;
-            case "Hot":
-                x = 100 + horse.getDistanceTravelled() * 6;
-                y = 500 + i * 40;
-                horse.setConfidence(horse.getConfidence() - 0.1);
-                break;
+    private int[] getHorsePositionBasedOnWeather(HorsePart2 horse, int i) {
+        int scaling = 10; // Default Dry scaling
+
+        if (weatherCondition != null) {
+            switch (weatherCondition) {
+                case "Wet":
+                    scaling = 7;
+                    horse.setConfidence(horse.getConfidence() - 0.2);
+                    break;
+                case "Hot":
+                    scaling = 6;
+                    horse.setConfidence(horse.getConfidence() - 0.1);
+                    break;
+            }
         }
+
+        int x = Math.max(0, 100 + horse.getDistanceTravelled() * scaling);
+        int y = Math.max(0, 500 + i * 40);
+
+        return new int[]{x, y};
     }
 
     private Color getHorseColor(HorsePart2 horse) {
@@ -133,14 +128,14 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
             }
         }
 
-        repaint();  // Redraw the screen with updated positions
+        repaint(); // Redraw the screen with updated positions
         raceFinished = checkFinishLine();
 
         if (raceFinished) {
             timer.stop();
             highlightWinner();
             if (raceEndCallback != null) {
-                raceEndCallback.run(); // Enable the Start Race button again
+                raceEndCallback.run();
             }
         }
     }
@@ -151,14 +146,14 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
             horse.moveForward();
         }
 
-        // Check if the horse falls (with a certain probability)
+        // Check if the horse falls
         if (Math.random() < (0.1 * horse.getConfidence() * horse.getConfidence())) {
             try {
                 horse.fall();
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
-            horse.setSymbol('Ⅹ');  // Symbol for fallen horse
+            horse.setSymbol('Ⅹ'); // Symbol for fallen horse
         }
     }
 
@@ -172,7 +167,7 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
     }
 
     private void highlightWinner() {
-        // Find the winner by the maximum distance
+        // Find the winner
         HorsePart2 winner = null;
         int maxDistance = 0;
         for (HorsePart2 horse : horses) {

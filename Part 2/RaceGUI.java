@@ -24,8 +24,16 @@ public class RaceGUI implements ActionListener {
     private JComboBox<Integer> lanesComboBox;
     private JComboBox<String> trackTypeComboBox;
     private JComboBox<String> weatherConditionComboBox;
+    JComboBox<String> equipmentComboBox;
+    JComboBox<String> horseShoesComboBox;
+
+    private JLabel trackConditionInfo;
+    private JLabel raceAnalyticsLabel;
+    private JLabel equipmentLabel = new JLabel("Equipment Type");
 
     private TrackConfigGUI trackConfigGUI;
+
+    private JButton ResetRaceButton = new JButton("Reset Race");
 
     public void setUpGUI() {
         SwingUtilities.invokeLater(() -> {
@@ -36,6 +44,7 @@ public class RaceGUI implements ActionListener {
 
             setUpButton();
             setUpComboBoxes();
+            setUpLabels();
             setUpPanels();
             setUpFrame();
         });
@@ -45,12 +54,24 @@ public class RaceGUI implements ActionListener {
                 && trackTypeComboBox.getSelectedItem() != null
                 && weatherConditionComboBox.getSelectedItem() != null;
         startRaceButton.setEnabled(ready);
+        ResetRaceButton.setEnabled(ready);
     }
 
     private void setUpButton() {
         startRaceButton.addActionListener(this);
         startRaceButton.setEnabled(true);
         startRaceButton.setEnabled(false);
+
+        ResetRaceButton.addActionListener(this);
+        ResetRaceButton.setEnabled(true);
+        ResetRaceButton.setEnabled(false);
+    }
+
+    public void setUpLabels() {
+        trackConditionInfo = new JLabel("Track Condition: Dry makes no difference to speed or stamina." +
+                "Wet decreases significantly decreases confidence and speed. Hot slightly decreases confidence and speed.");
+
+        raceAnalyticsLabel = new JLabel("Race Analytics");
     }
 
     private void setUpComboBoxes() {
@@ -71,6 +92,17 @@ public class RaceGUI implements ActionListener {
         weatherConditionComboBox.addActionListener(this);
         weatherConditionComboBox.setSelectedIndex(-1);
         weatherConditionComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose weather condition"));
+
+        String[] equipment = {"Saddle", "Cool Hat", "Gold Crown", "Bridle"};
+        equipmentComboBox = new JComboBox<>(equipment);
+        equipmentComboBox.addActionListener(this);
+        equipmentComboBox.setSelectedIndex(-1);
+        equipmentComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose equipment"));
+        String [] horseShoes = {"Regular", "Lightweight", "Extra Heavy"};
+        horseShoesComboBox = new JComboBox<>(horseShoes);
+        horseShoesComboBox.addActionListener(this);
+        horseShoesComboBox.setSelectedIndex(-1);
+        horseShoesComboBox.setRenderer(new ComboBoxPlaceholderRenderer("Choose horse shoe."));
     }
 
     private void setUpPanels() {
@@ -85,6 +117,19 @@ public class RaceGUI implements ActionListener {
 
         extraInfoPanel.setLayout(new FlowLayout());
         extraInfoPanel.add(startRaceButton);
+
+        extraInfoPanel.add(trackConditionInfo, FlowLayout.LEFT);
+        raceInfoPanel.setLayout(new BoxLayout(raceInfoPanel, BoxLayout.Y_AXIS));
+        raceInfoPanel.add(raceAnalyticsLabel);
+        BettingLogic bettingLogic = new BettingLogic(raceInfoPanel, horses);
+
+        horseEditPanel.setLayout(new BoxLayout(horseEditPanel, BoxLayout.Y_AXIS));
+        horseEditPanel.add(equipmentLabel);
+        horseEditPanel.add(horseShoesComboBox);
+        horseEditPanel.add(equipmentComboBox);
+
+        extraInfoPanel.add(ResetRaceButton);
+
     }
 
     private void setUpFrame() {
@@ -101,6 +146,30 @@ public class RaceGUI implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
     }
+    private void resetRace() {
+        // Reset combo box selections
+        lanesComboBox.setSelectedIndex(-1);
+        trackTypeComboBox.setSelectedIndex(-1);
+        weatherConditionComboBox.setSelectedIndex(-1);
+        equipmentComboBox.setSelectedIndex(-1);
+        horseShoesComboBox.setSelectedIndex(-1);
+
+        //set up new horses
+        horseNum = horseCustomiseGUI.horseNumSetUp();
+        horses = horseCustomiseGUI.createHorseOptions(horseNum);
+
+        // Refresh race panel
+        racePanel.removeAll();
+        racePanel.revalidate();
+        racePanel.repaint();
+
+
+        // Refresh other UI components
+        checkIfReadyToRace();  // Ensure that the buttons are properly enabled or disabled
+    }
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -110,6 +179,9 @@ public class RaceGUI implements ActionListener {
             handleTrackTypeSelection();
         } else if (e.getSource() == startRaceButton) {
             handleStartRace();
+        }
+        else if (e.getSource() == ResetRaceButton){
+            resetRace();
         }
         checkIfReadyToRace();
     }

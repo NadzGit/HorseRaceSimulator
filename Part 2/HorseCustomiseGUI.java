@@ -23,7 +23,7 @@ public class HorseCustomiseGUI {
     public HorsePart2[] createHorseOptions(int horseNum) {
         HorsePart2[] horses = new HorsePart2[horseNum];
         String[] breedOptions = {"Arabian", "Quarter", "Thorough Bred"};
-        Character[] breedChar = {'A', 'Q', 'T'};
+        Character[] breedChar = {'♔', 'Ч', '߷'};
         String[] ColorOptions = {"Brown", "White", "Black"};
 
         for (int i = 0; i < horseNum; i++) { // Start from 0 not 1
@@ -31,7 +31,7 @@ public class HorseCustomiseGUI {
                     "Name your horse", JOptionPane.QUESTION_MESSAGE);
 
             if (name == null || name.trim().isEmpty()) {
-                i--; // Retry naming this horse
+                i--;
                 continue;
             }
 
@@ -42,7 +42,7 @@ public class HorseCustomiseGUI {
             JPanel panel = new JPanel(new GridLayout(0, 1));
             panel.add(new JLabel("Select a horse symbol:"));
             panel.add(horseSymbolsComboBox);
-            panel.add(new JLabel("Select a breed:"));
+            panel.add(new JLabel("Select a breed (see how this impacts performance in the Horses tab of the Main Menu):"));
             panel.add(breedsComboBox);
             panel.add(new JLabel("Select a color:"));
             panel.add(colorsComboBox);
