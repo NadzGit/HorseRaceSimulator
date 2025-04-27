@@ -3,8 +3,8 @@
     /**
      * Write a description of class Horse here.
      *
-     * @author (your name)
-     * @version (a version number or a date)
+     * @author Nadine Seddat
+     * @version 27/04
      */
 
     public class HorsePart2 {
