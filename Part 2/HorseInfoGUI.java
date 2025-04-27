@@ -73,7 +73,7 @@ public class HorseInfoGUI implements ActionListener {
         } else if (e.getSource() == back) {
 
             MainMenuGUI mainMenuGUI = new MainMenuGUI();
-            mainMenuGUI.setUpGUI();
+            mainMenuGUI.startRaceGUI();
             mainFrame.dispose();
             return;
         }

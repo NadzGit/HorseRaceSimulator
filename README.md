@@ -14,7 +14,7 @@ Run this in your terminal:
 git clone https://github.com/NadzGit/HorseRaceSimulator.git
 
 2. Navigate to the project repository using:
-cd repo-name
+cd HorseRaceSimulator
 
 3. Make sure you have java installed (you can check by running the following command in your terminal)
 java -version
@@ -23,17 +23,17 @@ java -version
 First compile the java files:
 
 (For Part 1):
-javac Main.java
+javac StartRace.java
 
 (For Part 2):
-javac MainPart2.java
+javac StartRaceGUI.java
 
 Then run:
 (For Part 1)
-java Main.java
+java StartRace
 
 (For Part 2)
-java MainPart2.java
+java StartRaceGUI
 
 Alternatively, you can also run this from an IDEA such as Eclipse or IntelliJ
 

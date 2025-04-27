@@ -17,7 +17,7 @@ public class MainMenuGUI implements ActionListener {
 
 
 
-    public void setUpGUI() {
+    public void startRaceGUI() {
         ImageIcon originalIcon = new ImageIcon("Part 2/mainMenuBG.jpg");
         mainMenuBG = originalIcon; // no need to scale here anymore
 
