@@ -12,6 +12,8 @@ public class MainMenuGUI implements ActionListener {
     private JPanel sideBar = new JPanel();
     private JButton horseButton = new JButton("Horses");
 
+    private ImageIcon horseIcon = new ImageIcon("Part 2/horse.png");
+
 
     public void setUpGUI() {
         // Create the start button
@@ -24,6 +26,7 @@ public class MainMenuGUI implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(sideBar, BorderLayout.WEST);
+        frame.setIconImage(horseIcon.getImage());
 
         sideBar.add(horseButton);
         horseButton.addActionListener(this);
@@ -46,7 +49,8 @@ public class MainMenuGUI implements ActionListener {
 
         }
         if (e.getSource() == horseButton) {
-
+            HorseInfoGUI horseInfoGUI = new HorseInfoGUI();
+            horseInfoGUI.setUpGUI();
         }
     }
 }

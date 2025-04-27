@@ -13,11 +13,13 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
     private Runnable raceEndCallback;
     private boolean raceFinished = false;
     private String weatherCondition;
+    private String equipment;
 
-    public HorseMoveLogic(int laneNum, HorsePart2[] horses, String weatherCondition) {
+    public HorseMoveLogic(int laneNum, HorsePart2[] horses, String weatherCondition, String equipment) {
         this.laneNum = laneNum;
         this.weatherCondition = weatherCondition;
         this.horses = horses;
+        this.equipment = equipment;
         timer = new Timer(100, this); // updates every 100ms
     }
 
@@ -84,7 +86,7 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
 
     private int[] getHorsePositionBasedOnWeather(HorsePart2 horse, int i) {
         int scaling = 10; // Default Dry scaling
-
+    if (horse != null) {
         if (weatherCondition != null) {
             switch (weatherCondition) {
                 case "Wet":
@@ -97,6 +99,26 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
                     break;
             }
         }
+        if (equipment != null) {
+            switch (equipment) {
+                case "Saddle":
+                    scaling = 5;
+                    horse.setConfidence(horse.getConfidence() + 0.1);
+                    break;
+                case "Cool Hat":
+                    scaling = 7;
+                    horse.setConfidence(horse.getConfidence() + 0.105);
+                    break;
+                case "Gold Crown":
+                    scaling = 4;
+                    horse.setConfidence(horse.getConfidence() + 0.25);
+                    break;
+                case "Bridle":
+                    scaling = 3;
+                    horse.setConfidence(horse.getConfidence() + 0.2);
+            }
+        }
+    }
 
         int x = Math.max(0, 100 + horse.getDistanceTravelled() * scaling);
         int y = Math.max(0, 500 + i * 40);
