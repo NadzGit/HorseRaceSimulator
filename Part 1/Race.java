@@ -100,13 +100,17 @@ public class Race
         }
     }
 
-    private boolean allFallen() {
+    boolean allFallen() {
         for (Horse h : lanes) {
-            if (h != null && !h.hasFallen()) return false;
+            // Check if horse is non-null and has not fallen
+            if (h != null && !h.hasFallen()) {
+                return false;  // Not all horses have fallen
+            }
         }
-        return true;
+        return true;  // All horses have fallen
     }
-    
+
+
     /**
      * Randomly make a horse move forward or fall depending
      * on its confidence rating
