@@ -14,8 +14,10 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
     private boolean raceFinished = false;
     private String weatherCondition;
     private String equipment;
+    private BettingLogic bettingLogic;
 
-    public HorseMoveLogic(int laneNum, HorsePart2[] horses, String weatherCondition, String equipment) {
+
+    public HorseMoveLogic(int laneNum, HorsePart2[] horses, String weatherCondition, String equipment, BettingLogic bettingLogic) {
         this.laneNum = laneNum;
         this.weatherCondition = weatherCondition;
         this.horses = horses;
@@ -37,6 +39,7 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
         }
         return true;
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -156,6 +159,7 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
         if (raceFinished) {
             timer.stop();
             highlightWinner();
+
             if (raceEndCallback != null) {
                 raceEndCallback.run();
             }
@@ -188,7 +192,8 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
         return false;
     }
 
-    private void highlightWinner() {
+
+    private String highlightWinner() {
         // Find the winner
         HorsePart2 winner = null;
         int maxDistance = 0;
@@ -201,7 +206,13 @@ public class HorseMoveLogic extends JPanel implements ActionListener {
 
         // Show the winner
         JOptionPane.showMessageDialog(parentFrame, winner.getName() + " wins the race!");
+        if (bettingLogic != null) {
+            bettingLogic.processRaceResult(winner.getName());
+        }
+        return winner.getName();
     }
+
+
 
     public void startRaceWithCallback(Runnable callback) {
         timer.start();

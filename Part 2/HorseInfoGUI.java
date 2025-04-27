@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class HorseInfoGUI implements ActionListener {
     private JFrame mainFrame = new JFrame("Horse Info");
@@ -36,29 +37,29 @@ public class HorseInfoGUI implements ActionListener {
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setIconImage(horseIcon.getImage());
 
-        mainPanel.setLayout(new FlowLayout());  // Buttons are placed in a horizontal row
+        mainPanel.setLayout(new FlowLayout());
         mainPanel.add(quarterButton);
         mainPanel.add(thoroughBredButton);
         mainPanel.add(arabianButton);
 
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));  // Stack text vertically
-        infoPanel.add(back);  // Add the back button to the bottom of the text section
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.add(back);
 
-        mainFrame.add(mainPanel, BorderLayout.NORTH);  // Buttons at the top
-        mainFrame.add(infoPanel, BorderLayout.CENTER);  // Text below the buttons
+        mainFrame.add(mainPanel, BorderLayout.NORTH);
+        mainFrame.add(infoPanel, BorderLayout.CENTER);
 
-        mainFrame.setSize(400, 300); // Set the window size
+        mainFrame.setSize(400, 300);
     }
 
     public void setUpGUI() {
         setUpButtons();
         setUpFrame();
-        mainFrame.setVisible(true); // Make the frame visible at the end of setup
+        mainFrame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        infoPanel.removeAll(); // Clear previous text content
+        infoPanel.removeAll();
 
         if (e.getSource() == quarterButton) {
             infoPanel.add(quarterLabel);
@@ -70,17 +71,17 @@ public class HorseInfoGUI implements ActionListener {
             infoPanel.add(arabianLabel);
             infoPanel.add(arabianLabelInfo);
         } else if (e.getSource() == back) {
-            // Handle "Back" button to navigate back to main menu
+
             MainMenuGUI mainMenuGUI = new MainMenuGUI();
             mainMenuGUI.setUpGUI();
-            mainFrame.dispose(); // Close the current frame before opening the main menu
+            mainFrame.dispose();
             return;
         }
 
-        // Re-add the back button at the bottom of the info panel
+
         infoPanel.add(back);
 
-        mainFrame.revalidate(); // Ensure the layout is updated with the new components
-        mainFrame.repaint();    // Ensure the components are rendered correctly
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 }
