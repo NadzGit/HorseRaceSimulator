@@ -27,7 +27,10 @@ public class Race
     {
         // initialise instance variables
         raceLength = distance;
-        lanes = new ArrayList<Horse>(Collections.nCopies(laneCount, null));
+        lanes = new ArrayList<>(Collections.nCopies(laneCount, null));
+        if (distance <= 0 || laneCount <= 0) {
+            throw new IllegalArgumentException("Race length and lane count must be positive.");
+        }
     }
 
 
@@ -46,11 +49,24 @@ public class Race
         }
     }
 
+    public void clearConsole() {
+        String os = System.getProperty("os.name");
+        try {
+            if (os.startsWith("Windows")) {
+                // Command for Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Command for Linux/Mac
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
 
 
+        } catch (Exception e) {
+            System.out.println("Error while clearing console: " + e.getMessage());
 
 
-
+        }
+    }
     /**
      * Start the race
      * The horse are brought to the start and
@@ -65,6 +81,7 @@ public class Race
         }
 
         while (!finished) {
+            clearConsole();
             for (Horse h : lanes) {
                 if (h != null) moveHorse(h);
             }
@@ -87,6 +104,7 @@ public class Race
             }
 
             TimeUnit.MILLISECONDS.sleep(100);
+
         }
     }
     private void updateConfidence(Horse winner) {
@@ -121,6 +139,9 @@ public class Race
     private void moveHorse(Horse theHorse) throws InterruptedException {
         //if the horse has fallen it cannot move, 
         //so only run if it has not fallen
+
+        final double MAX_FALL_THRESHOLD = 0.1;
+
         if  (!theHorse.hasFallen())
         {
             //the probability that the horse will move forward depends on the confidence;
@@ -132,7 +153,7 @@ public class Race
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+            if (Math.random() < (MAX_FALL_THRESHOLD*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
                 theHorse.setSymbol('Ⅹ');
@@ -152,11 +173,12 @@ public class Race
         return theHorse.getDistanceTravelled() == raceLength;
     }
 
+
+
     /***
      * Print the race on the terminal
      */
     private void printRace() {
-        System.out.print('\u000C');  // clear screen
         multiplePrint('=', raceLength + 3);
         System.out.println();
 
@@ -172,7 +194,7 @@ public class Race
         multiplePrint('=', raceLength + 3);
         System.out.println();
     }
-    
+
     /**
      * print a horse's lane during the race
      * for example
@@ -196,16 +218,18 @@ public class Race
 
         System.out.print(theHorse.getSymbol());
 //
-        
+
         //print the spaces after the horse
         multiplePrint(' ',spacesAfter);
-        
+
         //print the | for the end of the track
         System.out.print('|' + "     " +  (theHorse.getName()).toUpperCase(Locale.ROOT) + " (Current Confidence "
                 + theHorse.getConfidence() + ".)");
     }
-        
-    
+
+
+
+
     /***
      * print a character a given number of times.
      * e.g. printmany('x',5) will print: xxxxx
