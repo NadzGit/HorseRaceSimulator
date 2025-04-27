@@ -8,8 +8,8 @@ import java.util.Collections;
  * A three-horse race, each horse running in its own lane
  * for a given distance
  * 
- * @author McRaceface
- * @version 1.0
+ * @author Nadine Seddat
+ * @version 5.0
  */
 public class Race
 {
