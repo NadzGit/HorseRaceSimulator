@@ -22,17 +22,19 @@ java -version
 4. Run the project
 First compile the java files:
 
-(For Part 1):
-javac StartRace.java
 
-(For Part 2):
-javac StartRaceGUI.java
+To run the terminal version:
+cd Part1
+javac *.java
 
 Then run:
-(For Part 1)
 java StartRace
 
-(For Part 2)
+To run the GUI version:
+cd Part2
+javac *.java
+
+Then run:
 java StartRaceGUI
 
 Alternatively, you can also run this from an IDEA such as Eclipse or IntelliJ
