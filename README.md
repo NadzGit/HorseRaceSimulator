@@ -45,6 +45,6 @@ JDK V11 or above
 
 USAGE:
 1. Main Menu: Press Horses to view how breed affects confidence. Press Start and you will be met with pop ups to start race set up. Follow instructions on screen.
-2. Race Execution: Once horses are customised, user can start the race. Equipment is optional. You may also bet on horses. Horses will move based on conditions such as equipment, weather condition and breed.
+2. Race Execution: Once horses are customised, user can start the race. Equipment is optional. You may also bet on horses. Horses will move based on conditions such as equipment, weather condition and breed. Please note that although you are able to select different track shapes, only a straight track will be displayed.
 3. Race Results: Winner will be displayed.
 
